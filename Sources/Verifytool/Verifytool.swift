@@ -13,7 +13,6 @@ struct Verifytool: ParsableCommand {
     
     @Flag(name: .shortAndLong)
     var verbose = false
-    public private(set) var text = "Hello, World!"
 
     func run() throws {
 
