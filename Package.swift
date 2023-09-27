@@ -6,7 +6,7 @@ import PackageDescription
 let package = Package(
     name: "Verifytool",
     platforms: [
-        .macOS(.v10_15)
+        .macOS(.v13)
     ],
     dependencies: [
         // Dependencies declare other packages that this package depends on.
