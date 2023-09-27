@@ -1,6 +1,7 @@
 import SwiftSyntax
 import SwiftParser
 import ArgumentParser
+import Foundation
 
 @main
 struct Verifytool: ParsableCommand {
@@ -15,20 +16,7 @@ struct Verifytool: ParsableCommand {
     var verbose = false
 
     func run() throws {
-
-        let swiftSource = """
-        import Foundation
-
-        func test() {
-            true ? print("hello world") : print("hello moon")
-        }
-
-        test()
-        """
-
-        let rootNode: SourceFileSyntax = Parser.parse(source: swiftSource)
-
-        // We will replace this in the next step.
-        print(rootNode.children(viewMode: .all))
+        
+        let contents = try String(contentsOfFile: inputFile, encoding: .utf8)
     }
 }
