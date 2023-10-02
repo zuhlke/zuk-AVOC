@@ -23,10 +23,9 @@ struct ArgumentDecoder {
                 
                 if isDir.boolValue {
                     
-                    let items = try FileManager.default.contentsOfDirectory(atPath: argument)
-                    let files = items.map({"\(argument)/" + "\($0)"})
-       
-                    return try files.map({ try String(contentsOfFile: $0, encoding: .utf8)})
+                    let items: [String] = try FileManager.default.contentsOfDirectory(atPath: argument)
+                   
+                    return try items.map({"\(argument)/" + "\($0)"}).map({ try String(contentsOfFile: $0, encoding: .utf8)})
                 } else {
                     return [try String(contentsOfFile: argument, encoding: .utf8)]
                 }
