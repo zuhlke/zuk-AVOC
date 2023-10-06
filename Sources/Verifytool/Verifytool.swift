@@ -18,5 +18,31 @@ struct Verifytool: ParsableCommand {
     func run() throws {
         
         let contents = try String(contentsOfFile: inputFile, encoding: .utf8)
+        print(contents)
+        
+        let rootNode: SourceFileSyntax = Parser.parse(source: contents)
+        recursiveCheck(node: Syntax(rootNode), indent: 0)
     }
+    
+    func recursiveCheck(node: Syntax,  indent: Int) {
+
+        for child in node.children(viewMode: .all) {
+            
+            if UnresolvedTernaryExprSyntax(child) != nil {
+                print("!!!WARNING - Use of ternary operator!!!")
+            }
+            
+            if let token = TokenSyntax(child),  token.tokenKind == .exclamationMark {
+                print("!!!WARNING - Use of force unwrapping!!!")
+            }
+            
+            if let token = TokenSyntax(child),  token.tokenKind == .binaryOperator("??") {
+                print("!!!WARNING - Use of nil coalescing operator!!!")
+            }
+            
+            recursiveCheck(node: child, indent: indent + 1)
+        }
+        
+    }
+
 }
