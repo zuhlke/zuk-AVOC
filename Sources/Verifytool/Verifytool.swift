@@ -10,18 +10,27 @@ struct Verifytool: ParsableCommand {
             abstract: "Welcome to the Zuhlke Swift Verification Tool. To help up hold our high development quality and assurance for our customers, we have designed this tool to check the compliance of your code")
     
     @Option(name: .shortAndLong, help: "The file you want reviewed")
-    var inputFile: String
+    var input: String
     
     @Flag(name: .shortAndLong)
     var verbose = false
 
     func run() throws {
         
-        let contents = try String(contentsOfFile: inputFile, encoding: .utf8)
-        print(contents)
-        
-        let rootNode: SourceFileSyntax = Parser.parse(source: contents)
-        recursiveCheck(node: Syntax(rootNode), indent: 0)
+        do {
+            let code = try ArgumentDecoder.process(argument: input)
+            print(code)
+            
+            let contents = try String(contentsOfFile: input, encoding: .utf8)
+            print(contents)
+            
+            let rootNode: SourceFileSyntax = Parser.parse(source: contents)
+            recursiveCheck(node: Syntax(rootNode), indent: 0)
+            
+        } catch {
+            print("FAIL")
+        }
+
     }
     
     func recursiveCheck(node: Syntax,  indent: Int) {
@@ -46,3 +55,5 @@ struct Verifytool: ParsableCommand {
     }
 
 }
+
+
